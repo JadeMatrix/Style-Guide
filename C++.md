@@ -117,3 +117,58 @@
 ## Comments
 
 * todo
+
+
+## Examples
+
+These are of course contrived to show off formatting edge-cases.
+
+```cpp
+std::string make_string( const char* c_string, std::size_t length )
+{
+    return { c_string, length };
+}
+```
+
+```cpp
+void long_signature(
+    const std::string               & arg1,
+    const std::vector< std::string >& arg2,
+    const std::vector< int         >& arg4,
+    const std::array< bool, 3 >     & arg4,
+    int                               arg3,
+    bool                              arg4
+)
+{
+    // ...
+}
+```
+
+```cpp
+auto formatted = format(
+    (
+        "error in some_function(): expected machine-readable string token, got "
+        "'{}' ({}) instead"
+    ),
+    foo,
+    bar
+);
+```
+
+```cpp
+auto callable = [](){
+    std::cout << "hello world" << std::endl;
+    return 0;
+};
+```
+
+```cpp
+std::cout
+    << "original:\t"
+    << original_strings[ n ]
+    << std::endl
+    << "modified:\t"
+    << modified_strings[ n ]
+    << std::endl
+;
+```
