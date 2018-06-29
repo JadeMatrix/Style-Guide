@@ -174,3 +174,56 @@ std::cout
     << std::endl
 ;
 ```
+
+Some real examples, sort out later:
+
+```cpp
+show::response response{
+    request.connection(),
+    show::http_protocol::HTTP_1_0,
+    { 200, "OK" },
+    {
+        server_header,
+        { "Content-Type"  , { "text/html"                   } },
+        { "Content-Length", { std::to_string( form.size() ) } }
+    }
+};
+
+analysis
+    << " -  segment with size "
+    << content.size()
+    << " bytes, headers:\n"
+;
+
+std::string message{
+    "HTTP/"
+    + std::string{ is_1p1 ? "1.1" : "1.0" }
+    + " "
+    + request.method()
+    + " request from "
+    + request.client_address()
+    + " on path /"
+};
+
+if( upload_data.data && (
+       needs_alpha_pass
+    || needs_drop_pass
+    || needs_gamma_pass
+) )
+{
+    // ...
+}
+
+template<
+    class AttributeBuffer,
+    class Framebuffer,
+    class IndexableNames
+>
+void bind(
+    gl::shader_program< AttributeBuffer, Framebuffer >& program,
+    const IndexableNames& names
+) const
+{
+    // ...
+}
+```
