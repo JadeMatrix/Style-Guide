@@ -68,12 +68,12 @@
 
 ## Scoping & Indentation
 
-* 4 spaces
+* use spaces not tabs
 * everything indented a multiple of 4 spaces except in a very few cases
-* align like segments to emphasize differences
-* restrict to 80-char width where practical — only exceptions should be for many long lines of aligned segments
+* restrict lines to 80 characters (not including newline char) where practical — only exceptions should be for many long lines of aligned segments
     * ***insert example***
     * may want to use temporary type alias, macros in this case
+* align like segments to emphasize differences
 * always use `()` for lambdas
 * first brace for lambdas on same line as `)` — reads best for now, may change as inconsistent with function declarations
 * opening curly brace on new line
