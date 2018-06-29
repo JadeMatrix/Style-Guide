@@ -78,6 +78,8 @@
 * first brace for lambdas on same line as `)` — reads best for now, may change as inconsistent with function declarations
 * opening curly brace on new line
 * scope-close same indent as scope-open
+* argument lists that would take the line past 80 characters should be split one argument per line, indented one stop, and followed by the comma; the closing parentheses should be indented back to the original level
+    * this rule is recursive for function calls used as arguments
 * multi-line stream format expressions have all `<< exp` on a newline 1 indent level, `;` on own line at parent indent
 
 
