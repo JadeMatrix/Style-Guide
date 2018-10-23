@@ -3,19 +3,30 @@
 [ToC]
 
 
+## General Usage
+
+* always compile with all possible warnings enabled; this will help signal bad design, unsafe operations, and broken code (written that way or after a refactor). for example, something like this (seen in production code, thankfully not security-critical):
+
+```cpp
+void seed_random( int seed )
+{
+    impl.srand();
+}
+```
+
+* use CMake for build configuration; see [CMake Style Guide](CMake.md)
+
+
 ## File Organization
 
-* include files in the same project by relative path in quoted include, all external files in bracketed include
-    * `#include "same_project_same_folder.hpp"`
-    * `#include "../same_project/different_folder.hpp"`
-    * `#include <external/library.hpp`, configure with build system
+* headers in `include/<name>/`, implementations in `src/`
+* headers in same library/executable include each other using relative (quoted) includes, source files include with lookup (angle brackets, e.g. `#include <my_project/foo.hpp>`)
 * include order:
     * (impl files) any headers this file implements, followed by empty line
     * in alphabetical order first any project files in the same folder, then any project files in other folders, followed by an empty line
     * any third-party includes, followed by an empty newline
     * any C and C++ stdlib includes
 * `#line` macro (if used for error messages etc.) should be first in file, never in headers
-* headers in `include/`, implementations in `src/`
 * namespace grouping
     * group like stuff in their own namespaces, even if that results in multiple `namespace xyz` blocks in the same file
     * allows IDE/editor code folding of stuff not being currently worked on
@@ -28,7 +39,8 @@
     * private namespace(s), between each
     * namespace(s), between each
     * include guard `#endif`
-* include guard `#endif` should be at end of file except for a single newline
+* include guard `#endif` should be at end of file, followed by a single newline
+* include guards should start with a `#pragma once` for compilers that support it, followed by traditional `#ifdef ...`
 
 
 ## Naming Conventions
@@ -73,6 +85,7 @@
 * restrict lines to 80 characters (not including newline char) where practical — only exceptions should be for many long lines of aligned segments
     * ***insert example***
     * may want to use temporary type alias, macros in this case
+    * prefer range-based-for over `std::initializer_list` (of possibly a single-use `struct` type) to many similar lines (insert Carmack citation)
 * align like segments to emphasize differences
 * always use `()` for lambdas
 * first brace for lambdas on same line as `)` — reads best for now, may change as inconsistent with function declarations
@@ -107,13 +120,21 @@
 * anything that requires semantic constraints should be a class that prohibits invalid state
 * constructors:
     * use constructors for unambiguous direct conversions or initialization
-    * use static factory methods for ambiguous and/or complex conversions or initialization
+        * for single-argument constructors these may or may not be marked `explicit` depending on how safe/performant an implicit conversion would be
+    * use static factory methods ("named constructors") for ambiguous and/or complex conversions or initialization
     * examples:
         * char-array-to-string would be a constructor
         * string-to-hash would need several factory methods:
             * create hash from incoming string
             * incoming string is already a hash digest as a raw byte string
             * incoming string is already a digest encoded as e.g. hex
+* when to use classes
+    * classes should be used as resource managers
+    * any functions that do not need direct access to an object's internal state should be free functions ([How Non-Member Functions Improve Encapsulation by Scott Meyers](http://www.drdobbs.com/cpp/how-non-member-functions-improve-encapsu/184401197))
+        * this includes any static member functions that may need to access the internal state of some object of that type, such as named constructors above
+    * if an object has no internal state it should have no member functions, and probably shouldn't exist
+        * caveat for traits- and tag-types
+        * caveat for template metaprogramming, especially pre-C++14
 
 
 ## Comments
